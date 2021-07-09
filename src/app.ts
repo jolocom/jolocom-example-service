@@ -1,11 +1,19 @@
-import express from 'express'
-import apiRoutes from './route/api'
+import 'reflect-metadata'
+import './controller'
+import config from './config/config'
+import * as bodyParser from 'body-parser'
+import { container } from './config/container.config'
+import { InversifyExpressServer } from 'inversify-express-utils'
 
-const port = 8080
-const app = express()
+const server = new InversifyExpressServer(container, null, { rootPath: `/api/${config.apiVersion}` })
 
-app.use('/api/v1', apiRoutes)
-
-app.listen(port, () => {
-  console.log(`App alive on http://localhost:${port}`)
+server.setConfig((app) => {
+  app.use(bodyParser.urlencoded({
+    extended: true
+  }))
+  app.use(bodyParser.json())
 })
+
+const app = server.build()
+
+app.listen(config.port)
