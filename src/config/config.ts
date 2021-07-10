@@ -14,4 +14,8 @@ export default {
   host: process.env.APP_HOST,
   schema: process.env.APP_SCHEME,
   apiVersion: process.env.API_VERSION || 'v1',
+
+  logger: {
+    logDir: process.env.LOG_DIR,
+  }
 }
