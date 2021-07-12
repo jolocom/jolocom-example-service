@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
+process.env.NODE_ENV = process.env.APP_ENV || 'dev';
+process.env.API_VERSION = process.env.API_VERSION || 'v1';
 
 const envFound = dotenv.config()
 
