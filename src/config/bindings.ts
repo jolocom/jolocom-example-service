@@ -8,6 +8,7 @@ import { getDbConnection } from './db'
 import config from './config'
 import { SdkPasswordStorageFactory } from '../sdk/sdkPasswordStorageFactory'
 import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
+import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
 
 export const bindings = new AsyncContainerModule(async (bind) => {
   const connection = await getDbConnection()
@@ -28,4 +29,5 @@ export const bindings = new AsyncContainerModule(async (bind) => {
   }).inSingletonScope()
   bind<SdkPasswordStorageFactory>(SdkPasswordStorageFactory).toSelf()
   bind<SdkAgentFactory>(SdkAgentFactory).toSelf()
+  bind<RequestDescriptionFactory>(RequestDescriptionFactory).toSelf()
 })
