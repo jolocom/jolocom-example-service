@@ -2,9 +2,8 @@ import 'reflect-metadata'
 import './controller'
 import config from './config/config'
 import * as bodyParser from 'body-parser'
-import { container } from './config/container.config'
 import { InversifyExpressServer } from 'inversify-express-utils'
-import { logger } from './config/logger.config'
+import { logger } from './config/logger'
 
 const server = new InversifyExpressServer(container, null, { rootPath: `/api/${config.apiVersion}` })
 
