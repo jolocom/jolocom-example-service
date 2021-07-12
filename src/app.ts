@@ -5,6 +5,8 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import { logger } from './config/logger'
 import { Container } from 'inversify'
 import { bindings } from './config/bindings'
+import swaggerUi from 'swagger-ui-express'
+import { openapiSpecification } from './config/openapi'
 
 (async () => {
   const container = new Container();
@@ -16,6 +18,7 @@ import { bindings } from './config/bindings'
       extended: true
     }))
     app.use(bodyParser.json())
+    app.use(`${config.apiRootPath}/api-doc`, swaggerUi.serve, swaggerUi.setup(openapiSpecification))
   })
 
   const app = server.build()
