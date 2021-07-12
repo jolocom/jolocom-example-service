@@ -47,6 +47,7 @@ export class AuthenticationController {
   @httpPost('/')
   public async post(request: Request) {
     const agent = await this.agentFactory.create()
+    // TODO: Add request body validation
     // TODO: Refactor in favor of strategy pattern usage
     const token = await agent.authRequestToken({
       description: request.body?.description,
