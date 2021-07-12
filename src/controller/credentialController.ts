@@ -9,7 +9,7 @@ export class CredentialController {
   }
 
   @httpPost('/response')
-  public async requestPost() {
+  public async responsePost() {
     // TODO: Implement
     return ''
   }
