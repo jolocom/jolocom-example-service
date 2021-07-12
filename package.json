@@ -1,5 +1,5 @@
 {
-  "name": "@jolocom/sdk-integration-example",
+  "name": "@jolocom/jolocom-example-service",
   "version": "0.1.0",
   "main": "app.js",
   "repository": "https://github.com/jolocom/jolocom-example-service.git",
