@@ -16,6 +16,8 @@ export class AuthenticationController {
    * /api/v1/authentication:
    *   post:
    *     summary: Receive authentication request description
+   *     tags:
+   *       - Authentication
    *     requestBody:
    *       description: Description
    *       required: false
