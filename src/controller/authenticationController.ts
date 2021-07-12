@@ -11,6 +11,39 @@ export class AuthenticationController {
     private readonly requestDescriptionFactory: RequestDescriptionFactory,
   ) {}
 
+  /**
+   * @openapi
+   * /api/v1/authentication:
+   *   post:
+   *     summary: Receive authentication request description
+   *     requestBody:
+   *       description: Description
+   *       required: false
+   *       content:
+   *         application/json:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               description:
+   *                 type: string
+   *     responses:
+   *       200:
+   *         description: Returns authentication request description.
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 id:
+   *                   type: string
+   *                   description: The token ID.
+   *                 jwt:
+   *                   type: string
+   *                   description: The token.
+   *                 qr:
+   *                   type: string
+   *                   description: The QR code of the JWT.
+   */
   @httpPost('/')
   public async post(request: Request) {
     const agent = await this.agentFactory.create()
