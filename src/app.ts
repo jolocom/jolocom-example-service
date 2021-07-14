@@ -6,10 +6,11 @@ import { logger } from './config/logger'
 import { Container } from 'inversify'
 import { bindings } from './config/bindings'
 import swaggerUi from 'swagger-ui-express'
-import { openapiSpecification } from './config/openapi'
+import { swaggerOptions } from './config/swagger'
+import swaggerJSDoc from 'swagger-jsdoc'
 
 (async () => {
-  const container = new Container();
+  const container = new Container()
   await container.loadAsync(bindings)
   const server = new InversifyExpressServer(container, null, { rootPath: config.apiRootPath })
 
@@ -18,7 +19,7 @@ import { openapiSpecification } from './config/openapi'
       extended: true
     }))
     app.use(bodyParser.json())
-    app.use(`${config.apiRootPath}/api-doc`, swaggerUi.serve, swaggerUi.setup(openapiSpecification))
+    app.use(`${config.apiRootPath}/api-doc`, swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(swaggerOptions)))
   })
 
   const app = server.build()

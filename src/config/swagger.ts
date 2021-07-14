@@ -1,7 +1,7 @@
-import swaggerJSDoc, { Options } from 'swagger-jsdoc'
+import { Options } from 'swagger-jsdoc'
 import appRootDir from 'app-root-path'
 
-const openapiOptions: Options = {
+export const swaggerOptions: Options = {
   definition: {
     openapi: '3.0.0',
     info: {
@@ -16,5 +16,3 @@ const openapiOptions: Options = {
   },
   apis: [ appRootDir + '/src/controller/*Controller.ts']
 }
-
-export const openapiSpecification = swaggerJSDoc(openapiOptions)
