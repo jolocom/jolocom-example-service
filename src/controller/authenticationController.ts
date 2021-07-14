@@ -19,7 +19,7 @@ export class AuthenticationController {
    *     tags:
    *       - Authentication
    *     requestBody:
-   *       description: Description
+   *       description: Body of the request
    *       required: false
    *       content:
    *         application/json:
