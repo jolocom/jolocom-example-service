@@ -1,14 +1,17 @@
+import { AppConfig } from '../config/config'
 import { controller, httpPost } from 'inversify-express-utils'
-import config from '../config/config'
 import { Request } from 'express'
 import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
+import { inject } from 'inversify'
+import { TYPES } from '../types'
 
 @controller('/authorization')
 export class AuthorizationController {
   constructor(
     private readonly agentFactory: SdkAgentFactory,
     private readonly requestDescriptionFactory: RequestDescriptionFactory,
+    @inject(TYPES.AppConfig) private readonly appConfig: AppConfig
   ) {}
 
   /**
@@ -52,14 +55,14 @@ export class AuthorizationController {
    */
   @httpPost('/')
   public async post(request: Request) {
-    const agent = await this.agentFactory.create()
     // TODO: Add request body validation
     // TODO: Refactor in favor of strategy pattern usage
+    const agent = await this.agentFactory.create()
     const token = await agent.authorizationRequestToken({
       description: request.body?.description,
       action: request.body?.action,
       imageURL: request.body?.imageURL,
-      callbackURL: config.sdk.callbackUrl,
+      callbackURL: this.appConfig.sdk.callbackUrl,
     })
     const requestDescription = await this.requestDescriptionFactory.create(token)
 

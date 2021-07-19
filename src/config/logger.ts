@@ -1,4 +1,4 @@
-import config from './config'
+import { config } from './config'
 import { Configuration, configure, getLogger } from 'log4js';
 
 //TODO: Implement decorator to pass logger with DI

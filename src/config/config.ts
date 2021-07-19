@@ -1,6 +1,8 @@
 import appRootDir from 'app-root-path'
 import dotenv from 'dotenv'
 import { Assert } from '../assert/assert'
+import { Options } from 'swagger-jsdoc'
+import { swaggerOptions } from './swagger'
 
 process.env.NODE_ENV = process.env.APP_ENV || 'dev';
 process.env.API_VERSION = process.env.API_VERSION || 'v1';
@@ -21,14 +23,50 @@ const assertRequiredVariablesDefined = () => {
 
 assertRequiredVariablesDefined()
 
-export default {
-  port: process.env.APP_PORT,
-  env: process.env.APP_ENV,
-  host: process.env.APP_HOST,
-  schema: process.env.APP_SCHEME,
+export interface AppConfig {
+  port: string,
+  env: string,
+  host: string,
+  schema: string,
+  apiVersion: string,
+  apiRootPath: string,
+  controllersPath: string,
+  fixturesPath: string,
+
+  sdk: {
+    passwordFilePath: string,
+    callbackUrl: string,
+  },
+
+  db: {
+    type: string,
+    database: string,
+    logging: string[],
+    entities: string[],
+    migrations: string[],
+    migrationsRun: boolean,
+    synchronize: boolean,
+    cli: {
+      migrationsDir: string,
+    },
+  },
+
+  logger: {
+    logDir: string,
+  },
+
+  swagger: Options
+}
+
+export const config: AppConfig = {
+  port: process.env.APP_PORT as string,
+  env: process.env.APP_ENV as string,
+  host: process.env.APP_HOST as string,
+  schema: process.env.APP_SCHEME as string,
   apiVersion: process.env.API_VERSION as string,
   apiRootPath: '/api/' + process.env.API_VERSION,
   controllersPath: appRootDir + '/src/controller',
+  fixturesPath: appRootDir + '/fixtures',
 
   sdk: {
     passwordFilePath: process.env.SDK_PASSWORD_FILE_PATH || appRootDir + '/var/password.txt',
@@ -50,5 +88,7 @@ export default {
 
   logger: {
     logDir: process.env.LOG_DIR || appRootDir + '/var/log',
-  }
+  },
+
+  swagger: swaggerOptions
 }

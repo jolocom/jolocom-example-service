@@ -5,15 +5,17 @@ import { SdkFactory } from '../sdk/sdkFactory'
 import { SdkStorageFactory } from '../sdk/sdkStorageFactory'
 import { Connection } from 'typeorm/connection/Connection'
 import { getDbConnection } from './db'
-import config from './config'
+import { AppConfig, config } from './config'
 import { SdkPasswordStorageFactory } from '../sdk/sdkPasswordStorageFactory'
 import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
+import { TYPES } from '../types'
 
 export const binding = new AsyncContainerModule(async (bind) => {
   const connection = await getDbConnection()
   await require(config.controllersPath);
 
+  bind<AppConfig>(TYPES.AppConfig).toConstantValue(config);
   bind<Connection>(Connection).toConstantValue(connection);
   bind<SdkStorageFactory>(SdkStorageFactory).toSelf()
   bind<SdkFactory>(SdkFactory).toSelf()

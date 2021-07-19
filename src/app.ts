@@ -1,12 +1,11 @@
 import 'reflect-metadata'
-import config from './config/config'
+import { config } from './config/config'
 import * as bodyParser from 'body-parser'
 import { InversifyExpressServer } from 'inversify-express-utils'
 import { logger } from './config/logger'
 import { Container } from 'inversify'
 import { binding } from './config/binding'
 import swaggerUi from 'swagger-ui-express'
-import { swaggerOptions } from './config/swagger'
 import swaggerJSDoc from 'swagger-jsdoc'
 
 (async () => {
@@ -19,7 +18,7 @@ import swaggerJSDoc from 'swagger-jsdoc'
       extended: true
     }))
     app.use(bodyParser.json())
-    app.use(`${config.apiRootPath}/api-doc`, swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(swaggerOptions)))
+    app.use(`${config.apiRootPath}/api-doc`, swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(config.swagger)))
   })
 
   const app = server.build()
