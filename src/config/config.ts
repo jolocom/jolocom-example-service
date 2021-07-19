@@ -40,11 +40,11 @@ export default {
     database: appRootDir + '/var/db.sqlite3',
     logging: ['error', 'warn', 'schema'],
     entities: [...require('@jolocom/sdk-storage-typeorm').entityList],
-    migrations: [appRootDir + '/migrations/*.ts'],
+    migrations: [appRootDir + '/migration/*.ts'],
     migrationsRun: true,
     synchronize: true,
     cli: {
-      migrationsDir: appRootDir + '/migrations',
+      migrationsDir: appRootDir + '/migration',
     },
   },
 

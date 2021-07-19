@@ -4,14 +4,14 @@ import * as bodyParser from 'body-parser'
 import { InversifyExpressServer } from 'inversify-express-utils'
 import { logger } from './config/logger'
 import { Container } from 'inversify'
-import { bindings } from './config/bindings'
+import { binding } from './config/binding'
 import swaggerUi from 'swagger-ui-express'
 import { swaggerOptions } from './config/swagger'
 import swaggerJSDoc from 'swagger-jsdoc'
 
 (async () => {
   const container = new Container()
-  await container.loadAsync(bindings)
+  await container.loadAsync(binding)
   const server = new InversifyExpressServer(container, null, { rootPath: config.apiRootPath })
 
   server.setConfig((app) => {

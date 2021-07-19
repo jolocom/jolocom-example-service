@@ -10,7 +10,7 @@ import { SdkPasswordStorageFactory } from '../sdk/sdkPasswordStorageFactory'
 import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
 
-export const bindings = new AsyncContainerModule(async (bind) => {
+export const binding = new AsyncContainerModule(async (bind) => {
   const connection = await getDbConnection()
   await require(config.controllersPath);
 
