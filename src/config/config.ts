@@ -12,11 +12,11 @@ if (envFound.error) {
 }
 
 const assertRequiredVariablesDefined = () => {
-  Assert.issDefined(process.env.APP_PORT, 'process.env.APP_PORT')
-  Assert.issDefined(process.env.APP_ENV, 'process.env.APP_ENV')
-  Assert.issDefined(process.env.APP_HOST, 'process.env.APP_HOST')
-  Assert.issDefined(process.env.APP_SCHEME, 'process.env.APP_SCHEME')
-  Assert.issDefined(process.env.SDK_CALLBACK_URL, 'process.env.SDK_CALLBACK_URL')
+  Assert.isDefined(process.env.APP_PORT, 'process.env.APP_PORT')
+  Assert.isDefined(process.env.APP_ENV, 'process.env.APP_ENV')
+  Assert.isDefined(process.env.APP_HOST, 'process.env.APP_HOST')
+  Assert.isDefined(process.env.APP_SCHEME, 'process.env.APP_SCHEME')
+  Assert.isDefined(process.env.SDK_CALLBACK_URL, 'process.env.SDK_CALLBACK_URL')
 }
 
 assertRequiredVariablesDefined()

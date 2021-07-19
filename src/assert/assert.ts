@@ -1,7 +1,7 @@
 import { AssertionError } from 'assert'
 
 export class Assert {
-  public static issDefined<T>(value: T, propertyName?: string): asserts value is NonNullable<T> {
+  public static isDefined<T>(value: T, propertyName?: string): asserts value is NonNullable<T> {
     if (value === undefined || value === null) {
       throw new AssertionError({
         message: propertyName
