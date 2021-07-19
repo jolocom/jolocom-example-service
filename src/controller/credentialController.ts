@@ -79,7 +79,6 @@ export class CredentialController {
     return requestDescription.toJSON()
   }
 
-
   /**
    * @openapi
    * /api/v1/credential-issuance/offer:
