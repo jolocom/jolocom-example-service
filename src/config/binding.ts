@@ -11,7 +11,10 @@ import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
 import { ClaimsMetadata } from '../credential/claimsMetadata'
 import { ClaimsMetadataProvider } from '../credential/claimsMetadataProvider'
+import { CredentialOffer } from '@jolocom/protocol-ts'
+import { CredentialOfferProvider } from '../credential/credentialOfferProvider'
 import { claimsMetadata as defaultClaimsMetadata } from '@jolocom/protocol-ts'
+import { demoCredentialOffers } from '../fixture/demoCredentialOffers'
 import { demoMetaData } from '../fixture/demoMetaData'
 import { TYPES } from '../types'
 
@@ -33,6 +36,11 @@ export const binding = new AsyncContainerModule(async (bind) => {
     return claimsMetadata
   })
 
+  if (config.env === 'dev') {
+    demoCredentialOffers.forEach(demoCredentialOffer => {
+      bind<CredentialOffer>(TYPES.CredentialOffer).toConstantValue(demoCredentialOffer)
+    })
+  }
 
   // SDK Services
   bind<SdkStorageFactory>(SdkStorageFactory).toSelf()
@@ -53,4 +61,5 @@ export const binding = new AsyncContainerModule(async (bind) => {
   // APP Services
   bind<RequestDescriptionFactory>(RequestDescriptionFactory).toSelf()
   bind<ClaimsMetadataProvider>(ClaimsMetadataProvider).toSelf()
+  bind<CredentialOfferProvider>(CredentialOfferProvider).toSelf()
 })
