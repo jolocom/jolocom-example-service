@@ -17,6 +17,7 @@ import { claimsMetadata as defaultClaimsMetadata } from '@jolocom/protocol-ts'
 import { demoCredentialOffers } from '../fixture/demoCredentialOffers'
 import { demoMetaData } from '../fixture/demoMetaData'
 import { TYPES } from '../types'
+import { CustomCredentialOfferFactory } from '../credential/customCredentialOfferFactory'
 
 export const binding = new AsyncContainerModule(async (bind) => {
   const connection = await getDbConnection()
@@ -62,4 +63,5 @@ export const binding = new AsyncContainerModule(async (bind) => {
   bind<RequestDescriptionFactory>(RequestDescriptionFactory).toSelf()
   bind<ClaimsMetadataProvider>(ClaimsMetadataProvider).toSelf()
   bind<CredentialOfferProvider>(CredentialOfferProvider).toSelf()
+  bind<CustomCredentialOfferFactory>(CustomCredentialOfferFactory).toSelf()
 })
