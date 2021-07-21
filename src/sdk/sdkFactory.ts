@@ -1,6 +1,6 @@
 import { injectable } from 'inversify'
 import { JolocomSDK } from '@jolocom/sdk'
-import { JolocomTypeormStorage } from '@jolocom/sdk-storage-typeorm/js/src'
+import { JolocomTypeormStorage } from '@jolocom/sdk-storage-typeorm'
 
 @injectable()
 export class SdkFactory {

@@ -7,6 +7,8 @@ import { RequestDescriptionFactory } from '../interaction/requestDescriptionFact
 import { Request } from 'express'
 import { inject } from 'inversify'
 import { TYPES } from '../types'
+import { CredentialOffer } from '@jolocom/protocol-ts'
+import { ICredentialRequest } from '@jolocom/protocol-ts/dist/lib/interactionTokens'
 
 @controller('/credential-issuance')
 export class CredentialController {
@@ -66,7 +68,7 @@ export class CredentialController {
     // TODO: Validation of credential type availability
     // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
-    const credentialRequirements = request.body.types.map((type: string) => ({
+    const credentialRequirements: ICredentialRequest[] = request.body.types.map((type: string) => ({
       type: this.claimsMetadataProvider.getByType(type).type
     }))
     const agent = await this.agentFactory.create()
@@ -121,7 +123,9 @@ export class CredentialController {
     // TODO: Validation of credential type availability
     // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
-    const offeredCredentials = request.body.types.map((type: string)  => this.credentialOfferProvider.getByType(type))
+    const offeredCredentials: CredentialOffer[] = request.body.types.map(
+      (type: string)  => this.credentialOfferProvider.getByType(type)
+    )
     const agent = await this.agentFactory.create()
     const token = await agent.credOfferToken({
       offeredCredentials,

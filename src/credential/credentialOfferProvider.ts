@@ -6,10 +6,10 @@ import { CredentialOffer } from '@jolocom/protocol-ts'
 export class CredentialOfferProvider {
   constructor(@multiInject(TYPES.CredentialOffer) private credentialOffers: CredentialOffer[]) {}
 
-  public getByType(type: string) {
+  public getByType(type: string): CredentialOffer {
     this.assertExists(type)
 
-    return this.credentialOffers.find(credentialOffer => credentialOffer.type === type)
+    return this.credentialOffers.find(credentialOffer => credentialOffer.type === type) as CredentialOffer
   }
 
   private assertExists(type: string) {
