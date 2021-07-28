@@ -18,6 +18,15 @@ import { demoCredentialOffers } from '../fixture/demoCredentialOffers'
 import { demoMetaData } from '../fixture/demoMetaData'
 import { TYPES } from '../types'
 import { CredentialOfferFactory } from '../credential/offer/credentialOfferFactory'
+import { InteractionProcessor } from '../interaction/interactionProcessor'
+import { AuthenticationProcessor } from '../interaction/authenticationProcessor'
+import { InteractionRequestHandler } from '../interaction/interactionRequestHandler'
+import { AuthorizationProcessor } from '../interaction/authorizationProcessor'
+import { CredentialShareProcessor } from '../interaction/credentialShareProcessor'
+import { CredentialIssuanceOfferProcessor } from '../interaction/credentialIssuanceOfferProcessor'
+import { CredentialIssuanceMetadataFactory } from '../credential/issuance/credentialIssuanceMetadataFactory'
+import { CredentialIssuanceClaimsResolver } from '../credential/issuance/credentialIssuanceClaimsResolver'
+import { CredentialIssuanceRequestFactory } from '../credential/issuance/credentialIssuanceRequestFactory'
 
 export const binding = new AsyncContainerModule(async (bind) => {
   const connection = await getDbConnection()
@@ -64,4 +73,12 @@ export const binding = new AsyncContainerModule(async (bind) => {
   bind<ClaimsMetadataProvider>(ClaimsMetadataProvider).toSelf()
   bind<StaticCredentialOfferProvider>(StaticCredentialOfferProvider).toSelf()
   bind<CredentialOfferFactory>(CredentialOfferFactory).toSelf()
+  bind<InteractionProcessor>(TYPES.InteractionProcessor).to(AuthenticationProcessor)
+  bind<InteractionProcessor>(TYPES.InteractionProcessor).to(AuthorizationProcessor)
+  bind<InteractionProcessor>(TYPES.InteractionProcessor).to(CredentialShareProcessor)
+  bind<InteractionProcessor>(TYPES.InteractionProcessor).to(CredentialIssuanceOfferProcessor)
+  bind<InteractionRequestHandler>(InteractionRequestHandler).toSelf()
+  bind<CredentialIssuanceMetadataFactory>(CredentialIssuanceMetadataFactory).toSelf()
+  bind<CredentialIssuanceClaimsResolver>(CredentialIssuanceClaimsResolver).toSelf()
+  bind<CredentialIssuanceRequestFactory>(CredentialIssuanceRequestFactory).toSelf()
 })
