@@ -12,7 +12,7 @@ import { RequestDescriptionFactory } from '../interaction/requestDescriptionFact
 import { ClaimsMetadata } from '../credential/claimsMetadata'
 import { ClaimsMetadataProvider } from '../credential/claimsMetadataProvider'
 import { CredentialOffer } from '@jolocom/protocol-ts'
-import { CredentialOfferProvider } from '../credential/credentialOfferProvider'
+import { StaticCredentialOfferProvider } from '../credential/offer/staticCredentialOfferProvider'
 import { claimsMetadata as defaultClaimsMetadata } from '@jolocom/protocol-ts'
 import { demoCredentialOffers } from '../fixture/demoCredentialOffers'
 import { demoMetaData } from '../fixture/demoMetaData'
@@ -62,6 +62,6 @@ export const binding = new AsyncContainerModule(async (bind) => {
   // APP Services
   bind<RequestDescriptionFactory>(RequestDescriptionFactory).toSelf()
   bind<ClaimsMetadataProvider>(ClaimsMetadataProvider).toSelf()
-  bind<CredentialOfferProvider>(CredentialOfferProvider).toSelf()
+  bind<StaticCredentialOfferProvider>(StaticCredentialOfferProvider).toSelf()
   bind<CustomCredentialOfferFactory>(CustomCredentialOfferFactory).toSelf()
 })

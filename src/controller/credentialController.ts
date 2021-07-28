@@ -1,7 +1,7 @@
 import { AppConfig } from '../config/config'
 import { controller, httpPost } from 'inversify-express-utils'
 import { ClaimsMetadataProvider } from '../credential/claimsMetadataProvider'
-import { CredentialOfferProvider } from '../credential/credentialOfferProvider'
+import { StaticCredentialOfferProvider } from '../credential/offer/staticCredentialOfferProvider'
 import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
 import { Request } from 'express'
@@ -19,7 +19,7 @@ export class CredentialController {
     private readonly agentFactory: SdkAgentFactory,
     private readonly requestDescriptionFactory: RequestDescriptionFactory,
     private readonly claimsMetadataProvider: ClaimsMetadataProvider,
-    private readonly credentialOfferProvider: CredentialOfferProvider,
+    private readonly staticCredentialOfferProvider: StaticCredentialOfferProvider,
     private readonly customCredentialOfferFactory: CustomCredentialOfferFactory
   ) {}
 
@@ -121,7 +121,7 @@ export class CredentialController {
     // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
     const offeredCredentials: CredentialOffer[] = request.body.types.map(
-      (type: string)  => this.credentialOfferProvider.getByType(type)
+      (type: string) => this.staticCredentialOfferProvider.getByType(type)
     )
     const agent = await this.agentFactory.create()
     const token = await agent.credOfferToken({
