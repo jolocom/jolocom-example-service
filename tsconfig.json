@@ -1,8 +1,8 @@
 {
   "include": ["src", "tests"],
   "compilerOptions": {
-    "target": "ES6",
-    "lib": ["es6"],
+    "target": "esnext",
+    "lib": ["esnext"],
     "types": ["reflect-metadata", "node"],
     "module": "commonjs",
     "declaration": true,
