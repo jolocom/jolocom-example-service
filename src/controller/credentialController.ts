@@ -7,9 +7,8 @@ import { RequestDescriptionFactory } from '../interaction/requestDescriptionFact
 import { Request } from 'express'
 import { inject } from 'inversify'
 import { TYPES } from '../types'
-import { CustomCredentialOffer } from '../credential/customCredentialOffer'
-import { CustomCredentialOfferFactory } from '../credential/customCredentialOfferFactory'
-import { CredentialOffer } from '@jolocom/protocol-ts'
+import { CredentialOfferRequest } from '../credential/offer/credentialOfferRequest'
+import { CredentialOfferFactory } from '../credential/offer/credentialOfferFactory'
 import { ICredentialRequest } from '@jolocom/protocol-ts/dist/lib/interactionTokens'
 
 @controller('/credential-issuance')
@@ -20,7 +19,7 @@ export class CredentialController {
     private readonly requestDescriptionFactory: RequestDescriptionFactory,
     private readonly claimsMetadataProvider: ClaimsMetadataProvider,
     private readonly staticCredentialOfferProvider: StaticCredentialOfferProvider,
-    private readonly customCredentialOfferFactory: CustomCredentialOfferFactory
+    private readonly credentialOfferFactory: CredentialOfferFactory
   ) {}
 
   /**
@@ -120,7 +119,7 @@ export class CredentialController {
     // TODO: Validation of credential type availability
     // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
-    const offeredCredentials: CredentialOffer[] = request.body.types.map(
+    const offeredCredentials: CredentialOfferRequest[] = request.body.types.map(
       (type: string) => this.staticCredentialOfferProvider.getByType(type)
     )
     const agent = await this.agentFactory.create()
@@ -135,7 +134,7 @@ export class CredentialController {
 
   /**
    * @openapi
-   * /api/v1/credential-issuance/custom:
+   * /api/v1/credential-issuance/offer/custom:
    *   post:
    *     summary: Receive custom credential issuance offer request description
    *     tags:
@@ -249,13 +248,13 @@ export class CredentialController {
    *                   type: string
    *                   description: The QR code of the JWT.
    */
-  @httpPost('/custom')
+  @httpPost('/offer/custom')
   public async offerCustomPost(request: Request) {
     // TODO: Validation of the request body
     // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
-    const offeredCredentials: CredentialOffer[] = request.body.map(
-      (offer: CustomCredentialOffer) => this.customCredentialOfferFactory.create(offer)
+    const offeredCredentials: CredentialOfferRequest[] = request.body.map(
+      (offer: CredentialOfferRequest) => this.credentialOfferFactory.create(offer)
     )
     const agent = await this.agentFactory.create()
     const token = await agent.credOfferToken({
