@@ -3,4 +3,5 @@ export const TYPES = {
   ClaimsMetadata: Symbol("ClaimsMetadata"),
   CredentialOffer: Symbol("CredentialOffer"),
   InteractionProcessor: Symbol("InteractionProcessor"),
+  Controller: Symbol("Controller"),
 }

@@ -1,17 +1,16 @@
 import { AppConfig } from '../config/config'
-import { controller, httpPost } from 'inversify-express-utils'
 import { ClaimsMetadataProvider } from '../credential/claimsMetadataProvider'
 import { StaticCredentialOfferProvider } from '../credential/offer/staticCredentialOfferProvider'
 import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
-import { Request } from 'express'
-import { inject } from 'inversify'
+import { Request, Response } from 'express'
+import { inject, injectable } from 'inversify'
 import { TYPES } from '../types'
 import { CredentialOfferRequest } from '../credential/offer/credentialOfferRequest'
 import { CredentialOfferFactory } from '../credential/offer/credentialOfferFactory'
 import { ICredentialRequest } from '@jolocom/protocol-ts/dist/lib/interactionTokens'
 
-@controller('/credential-issuance')
+@injectable()
 export class CredentialController {
   constructor(
     @inject(TYPES.AppConfig) private readonly appConfig: AppConfig,
@@ -22,45 +21,7 @@ export class CredentialController {
     private readonly credentialOfferFactory: CredentialOfferFactory
   ) {}
 
-  /**
-   * @openapi
-   * /api/v1/credential-issuance/request:
-   *   post:
-   *     summary: Receive credential issuance request description
-   *     tags:
-   *       - Credential Issuance
-   *     requestBody:
-   *       description: Body of the request
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             type: object
-   *             properties:
-   *               types:
-   *                 type: array
-   *                 items:
-   *                   type: string
-   *     responses:
-   *       200:
-   *         description: Returns credential issuance request description.
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 id:
-   *                   type: string
-   *                   description: The token ID.
-   *                 jwt:
-   *                   type: string
-   *                   description: The token.
-   *                 qr:
-   *                   type: string
-   *                   description: The QR code of the JWT.
-   */
-  @httpPost('/request')
-  public async requestPost(request: Request) {
+  public async requestPost(request: Request, response: Response) {
     // TODO: Validation of credential type availability
     // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
@@ -74,48 +35,10 @@ export class CredentialController {
     })
     const requestDescription = await this.requestDescriptionFactory.create(token)
 
-    return requestDescription.toJSON()
+    response.json(requestDescription.toJSON())
   }
 
-  /**
-   * @openapi
-   * /api/v1/credential-issuance/offer:
-   *   post:
-   *     summary: Receive credential issuance offer request description
-   *     tags:
-   *       - Credential Issuance
-   *     requestBody:
-   *       description: Body of the request
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             type: object
-   *             properties:
-   *               types:
-   *                 type: array
-   *                 items:
-   *                   type: string
-   *     responses:
-   *       200:
-   *         description: Returns credential issuance offer request description.
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 id:
-   *                   type: string
-   *                   description: The token ID.
-   *                 jwt:
-   *                   type: string
-   *                   description: The token.
-   *                 qr:
-   *                   type: string
-   *                   description: The QR code of the JWT.
-   */
-  @httpPost('/offer')
-  public async offerPost(request: Request) {
+  public async offerPost(request: Request, response: Response) {
     // TODO: Validation of credential type availability
     // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
@@ -129,127 +52,10 @@ export class CredentialController {
     })
     const requestDescription = await this.requestDescriptionFactory.create(token)
 
-    return requestDescription.toJSON()
+    response.json(requestDescription.toJSON())
   }
 
-  /**
-   * @openapi
-   * /api/v1/credential-issuance/offer/custom:
-   *   post:
-   *     summary: Receive custom credential issuance offer request description
-   *     tags:
-   *       - Credential Issuance
-   *     requestBody:
-   *       description: Body of the request
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             type: array
-   *             items:
-   *               type: object
-   *               properties:
-   *                 name:
-   *                   type: string
-   *                 type:
-   *                   type: string
-   *                 schema:
-   *                   type: string
-   *                 claims:
-   *                   type: object
-   *                   additionalProperties:
-   *                     type: string
-   *                 renderAs:
-   *                   type: string
-   *                   enum:
-   *                     - document
-   *                     - permission
-   *                     - claim
-   *                 display:
-   *                   type: object
-   *                   properties:
-   *                     title:
-   *                       required: false
-   *                       type: object
-   *                       properties:
-   *                         path:
-   *                           type: array
-   *                           required: false
-   *                           items:
-   *                             type: string
-   *                         text:
-   *                           type: string
-   *                           required: false
-   *                         label:
-   *                           type: string
-   *                           required: false
-   *                     subtitle:
-   *                       required: false
-   *                       type: object
-   *                       properties:
-   *                         path:
-   *                           type: array
-   *                           required: false
-   *                           items:
-   *                             type: string
-   *                         text:
-   *                           type: string
-   *                           required: false
-   *                         label:
-   *                           type: string
-   *                           required: false
-   *                     description:
-   *                       required: false
-   *                       type: object
-   *                       properties:
-   *                         path:
-   *                           type: array
-   *                           required: false
-   *                           items:
-   *                             type: string
-   *                         text:
-   *                           type: string
-   *                           required: false
-   *                         label:
-   *                           type: string
-   *                           required: false
-   *                     properties:
-   *                       required: false
-   *                       type: array
-   *                       items:
-   *                         type: object
-   *                         properties:
-   *                           path:
-   *                             type: array
-   *                             required: false
-   *                             items:
-   *                               type: string
-   *                           text:
-   *                             type: string
-   *                             required: false
-   *                           label:
-   *                             type: string
-   *                             required: false
-   *     responses:
-   *       200:
-   *         description: Returns custom credential issuance offer request description.
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 id:
-   *                   type: string
-   *                   description: The token ID.
-   *                 jwt:
-   *                   type: string
-   *                   description: The token.
-   *                 qr:
-   *                   type: string
-   *                   description: The QR code of the JWT.
-   */
-  @httpPost('/offer/custom')
-  public async offerCustomPost(request: Request) {
+  public async offerCustomPost(request: Request, response: Response) {
     // TODO: Validation of the request body
     // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
@@ -263,6 +69,6 @@ export class CredentialController {
     })
     const requestDescription = await this.requestDescriptionFactory.create(token)
 
-    return requestDescription.toJSON()
+    response.json(requestDescription.toJSON())
   }
 }

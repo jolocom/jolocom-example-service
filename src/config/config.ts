@@ -1,8 +1,8 @@
 import appRootDir from 'app-root-path'
 import dotenv from 'dotenv'
 import { Assert } from '../assert/assert'
-import { Options } from 'swagger-jsdoc'
-import { swaggerOptions } from './swagger'
+import { Oas3ToolsObjectOrientedConfig } from '@jolocom/oas3-tools-object-oriented'
+import { oas3AppOptions } from './swagger'
 
 process.env.NODE_ENV = process.env.APP_ENV || 'dev';
 process.env.API_VERSION = process.env.API_VERSION || 'v1';
@@ -55,7 +55,7 @@ export interface AppConfig {
     logDir: string,
   },
 
-  swagger: Options
+  swagger: Oas3ToolsObjectOrientedConfig
 }
 
 export const config: AppConfig = {
@@ -90,5 +90,8 @@ export const config: AppConfig = {
     logDir: process.env.LOG_DIR || appRootDir + '/var/log',
   },
 
-  swagger: swaggerOptions
+  swagger: {
+    oas3AppOptions,
+    oas3DeclarationFilePath: appRootDir + '/src/api/openapi.yaml',
+  }
 }

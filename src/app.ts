@@ -5,20 +5,20 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import { logger } from './config/logger'
 import { Container } from 'inversify'
 import { binding } from './config/binding'
-import swaggerUi from 'swagger-ui-express'
-import swaggerJSDoc from 'swagger-jsdoc'
+import { TYPES } from './types'
+import { oas3ToolsObjectOriented } from '@jolocom/oas3-tools-object-oriented'
 
 (async () => {
   const container = new Container()
   await container.loadAsync(binding)
-  const server = new InversifyExpressServer(container, null, { rootPath: config.apiRootPath })
+  const server = new InversifyExpressServer(container, null, { rootPath: config.apiRootPath }, null, null, false)
 
   server.setConfig((app) => {
     app.use(bodyParser.urlencoded({
       extended: true
     }))
     app.use(bodyParser.json())
-    app.use(`${config.apiRootPath}/api-doc`, swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(config.swagger)))
+    app.use(oas3ToolsObjectOriented(container.getAll(TYPES.Controller), config.swagger))
   })
 
   const app = server.build()

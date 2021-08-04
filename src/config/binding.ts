@@ -27,10 +27,15 @@ import { CredentialIssuanceOfferProcessor } from '../interaction/credentialIssua
 import { CredentialIssuanceMetadataFactory } from '../credential/issuance/credentialIssuanceMetadataFactory'
 import { CredentialIssuanceClaimsResolver } from '../credential/issuance/credentialIssuanceClaimsResolver'
 import { CredentialIssuanceRequestFactory } from '../credential/issuance/credentialIssuanceRequestFactory'
+import {
+  AuthenticationController,
+  AuthorizationController,
+  CallbackController,
+  CredentialController,
+} from '../controller'
 
 export const binding = new AsyncContainerModule(async (bind) => {
   const connection = await getDbConnection()
-  await require(config.controllersPath);
 
   // Config
   bind<AppConfig>(TYPES.AppConfig).toConstantValue(config);
@@ -51,6 +56,12 @@ export const binding = new AsyncContainerModule(async (bind) => {
       bind<CredentialOffer>(TYPES.CredentialOffer).toConstantValue(demoCredentialOffer)
     })
   }
+
+  // Controllers
+  bind(TYPES.Controller).to(AuthenticationController)
+  bind(TYPES.Controller).to(AuthorizationController)
+  bind(TYPES.Controller).to(CallbackController)
+  bind(TYPES.Controller).to(CredentialController)
 
   // SDK Services
   bind<SdkStorageFactory>(SdkStorageFactory).toSelf()

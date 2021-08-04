@@ -1,0 +1,255 @@
+openapi: 3.0.0
+info:
+  title: Jolocom Example Service API
+  description: Example of service API with usage of Jolocom SDK
+  contact:
+    name: Jolocom Dev
+    email: dev@jolocom.io
+  version: 1.0.0
+servers:
+- url: /api/v1
+tags:
+- name: Authentication
+  description: Authentication interaction requests preparation endpoints.
+- name: Authorization
+  description: Authorization interaction requests preparation endpoints.
+- name: Callback
+  description: Callbacks processing endpoints.
+- name: Credential Issuance
+  description: Credential Issuance requests endpoints.
+paths:
+  /authentication:
+    post:
+      tags:
+        - Authentication
+      summary: Receive Authentication request description
+      requestBody:
+        description: A JSON object containing authentication request information
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationDescription'
+      responses:
+        "200":
+          description: Returns authentication request description.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDescription'
+      x-swagger-router-controller: AuthenticationController
+      operationId: post
+  /authorization:
+    post:
+      tags:
+        - Authorization
+      summary: Receive authorization request description
+      requestBody:
+        description: A JSON object containing authorization request information
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                action:
+                  type: string
+                imageURL:
+                  type: string
+      responses:
+        "200":
+          description: Returns authorization request description.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDescription'
+      x-swagger-router-controller: AuthorizationController
+      operationId: post
+  /callback:
+    post:
+      summary: Process interaction callbacks
+      tags:
+        - Callback
+      requestBody:
+        description: A JSON object containing jwt.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Token"
+      responses:
+        "200":
+          description: Returns encoded jwt.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        "404":
+          description: Returns when interaction for provided token was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+      x-swagger-router-controller: CallbackController
+      operationId: post
+  /credential-issuance/request:
+    post:
+      summary: Receive credential issuance request description
+      tags:
+        - Credential Issuance
+      requestBody:
+        description: A JSON object containing body of the request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialsIssuanceRequestBody'
+      responses:
+        "200":
+          description: Returns credential issuance request description.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDescription'
+      x-swagger-router-controller: CredentialController
+      operationId: requestPost
+  /credential-issuance/offer:
+    post:
+      summary: Receive credential issuance offer request description.
+      tags:
+        - Credential Issuance
+      requestBody:
+        description: A JSON object containing body of the request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialsIssuanceRequestBody'
+      responses:
+        "200":
+          description: Returns credential issuance offer request description.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDescription'
+      x-swagger-router-controller: CredentialController
+      operationId: offerPost
+  /credential-issuance/offer/custom:
+    post:
+      summary: Receive custom credential issuance offer request description
+      tags:
+        - Credential Issuance
+      requestBody:
+        description: A JSON object containing body of the request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomOfferRequestBody'
+      responses:
+        200:
+          description: Returns custom credential issuance offer request description.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestDescription'
+components:
+  schemas:
+    AuthenticationDescription:
+      type: object
+      properties:
+        description:
+          type: string
+    RequestDescription:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The token ID.
+        jwt:
+          type: string
+          description: The token.
+        qr:
+          type: string
+          description: The QR code of the JWT.
+      example:
+        qr: qr
+        jwt: jwt
+        id: id
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+          description: The token.
+    CredentialsIssuanceRequestBody:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            type: string
+    CustomOfferRequestBody:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+          type:
+            type: string
+          schema:
+            type: string
+          claims:
+            type: object
+            additionalProperties:
+              type: string
+          renderAs:
+            type: string
+            enum:
+              - document
+              - permission
+              - claim
+          display:
+            type: object
+            properties:
+              title:
+                type: object
+                properties:
+                  path:
+                    type: array
+                    items:
+                      type: string
+                  text:
+                    type: string
+                  label:
+                    type: string
+              description:
+                type: object
+                properties:
+                  path:
+                    type: array
+                    items:
+                      type: string
+                  text:
+                    type: string
+                  label:
+                    type: string
+              properties:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    path:
+                      type: array
+                      items:
+                        type: string
+                    text:
+                      type: string
+                    label:
+                      type: string
