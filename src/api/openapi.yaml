@@ -158,6 +158,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RequestDescription'
+      x-swagger-router-controller: CredentialController
+      operationId: offerCustomPost
 components:
   schemas:
     AuthenticationDescription:
