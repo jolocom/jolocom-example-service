@@ -38,7 +38,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RequestDescription'
       x-swagger-router-controller: AuthenticationController
-      operationId: post
+      operationId: authenticationPost
   /authorization:
     post:
       tags:
@@ -66,7 +66,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RequestDescription'
       x-swagger-router-controller: AuthorizationController
-      operationId: post
+      operationId: authorizationPost
   /callback:
     post:
       summary: Process interaction callbacks
@@ -96,7 +96,7 @@ paths:
                   message:
                     type: string
       x-swagger-router-controller: CallbackController
-      operationId: post
+      operationId: callbackPost
   /credential-issuance/request:
     post:
       summary: Receive credential issuance request description

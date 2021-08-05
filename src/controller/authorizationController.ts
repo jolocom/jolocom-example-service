@@ -13,7 +13,7 @@ export class AuthorizationController {
     @inject(TYPES.AppConfig) private readonly appConfig: AppConfig
   ) {}
 
-  public async post(request: Request, response: Response) {
+  public async authorizationPost(request: Request, response: Response) {
     // TODO: Add request body validation
     // TODO: Refactor in favor of strategy pattern usage
     const agent = await this.agentFactory.create()

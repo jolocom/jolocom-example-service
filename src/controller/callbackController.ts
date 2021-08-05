@@ -12,7 +12,7 @@ export class CallbackController {
     private readonly interactionRequestHandler: InteractionRequestHandler,
   ) {}
 
-  public async post(request: Request, response: Response) {
+  public async callbackPost(request: Request, response: Response) {
     const agent = await this.agentFactory.create()
 
     try {
