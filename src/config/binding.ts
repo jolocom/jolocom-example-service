@@ -7,7 +7,7 @@ import { Connection } from 'typeorm/connection/Connection'
 import { getDbConnection } from './db'
 import { AppConfig, config } from './config'
 import { SdkPasswordStorageFactory } from '../sdk/sdkPasswordStorageFactory'
-import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
+import { SdkAgentProvider } from '../sdk/sdkAgentProvider'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
 import { ClaimsMetadata } from '../credential/claimsMetadata'
 import { ClaimsMetadataProvider } from '../credential/claimsMetadataProvider'
@@ -77,7 +77,7 @@ export const binding = new AsyncContainerModule(async (bind) => {
     return sdkFactory.create()
   }).inSingletonScope()
   bind<SdkPasswordStorageFactory>(SdkPasswordStorageFactory).toSelf()
-  bind<SdkAgentFactory>(SdkAgentFactory).toSelf()
+  bind<SdkAgentProvider>(SdkAgentProvider).toSelf()
 
   // APP Services
   bind<RequestDescriptionFactory>(RequestDescriptionFactory).toSelf()

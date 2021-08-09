@@ -1,7 +1,7 @@
 import { AppConfig } from '../config/config'
 import { ClaimsMetadataProvider } from '../credential/claimsMetadataProvider'
 import { StaticCredentialOfferProvider } from '../credential/offer/staticCredentialOfferProvider'
-import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
+import { SdkAgentProvider } from '../sdk/sdkAgentProvider'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
@@ -14,7 +14,7 @@ import { ICredentialRequest } from '@jolocom/protocol-ts/dist/lib/interactionTok
 export class CredentialController {
   constructor(
     @inject(TYPES.AppConfig) private readonly appConfig: AppConfig,
-    private readonly agentFactory: SdkAgentFactory,
+    private readonly agentProvider: SdkAgentProvider,
     private readonly requestDescriptionFactory: RequestDescriptionFactory,
     private readonly claimsMetadataProvider: ClaimsMetadataProvider,
     private readonly staticCredentialOfferProvider: StaticCredentialOfferProvider,
@@ -28,7 +28,7 @@ export class CredentialController {
     const credentialRequirements: ICredentialRequest[] = request.body.types.map((type: string) => ({
       type: this.claimsMetadataProvider.getByType(type).type
     }))
-    const agent = await this.agentFactory.create()
+    const agent = await this.agentProvider.provide()
     const token = await agent.credRequestToken({
       credentialRequirements,
       callbackURL: this.appConfig.sdk.callbackUrl,
@@ -45,7 +45,7 @@ export class CredentialController {
     const offeredCredentials: CredentialOfferRequest[] = request.body.types.map(
       (type: string) => this.staticCredentialOfferProvider.getByType(type)
     )
-    const agent = await this.agentFactory.create()
+    const agent = await this.agentProvider.provide()
     const token = await agent.credOfferToken({
       offeredCredentials,
       callbackURL: this.appConfig.sdk.callbackUrl
@@ -62,7 +62,7 @@ export class CredentialController {
     const offeredCredentials: CredentialOfferRequest[] = request.body.map(
       (offer: CredentialOfferRequest) => this.credentialOfferFactory.create(offer)
     )
-    const agent = await this.agentFactory.create()
+    const agent = await this.agentProvider.provide()
     const token = await agent.credOfferToken({
       offeredCredentials,
       callbackURL: this.appConfig.sdk.callbackUrl

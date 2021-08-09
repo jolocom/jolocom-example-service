@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
+import { SdkAgentProvider } from '../sdk/sdkAgentProvider'
 import { ErrorCode } from '@jolocom/sdk'
 import { StatusCodes } from 'http-status-codes'
 import { InteractionRequestHandler } from '../interaction/interactionRequestHandler'
@@ -8,12 +8,12 @@ import { injectable } from 'inversify'
 @injectable()
 export class CallbackController {
   constructor(
-    private readonly agentFactory: SdkAgentFactory,
+    private readonly agentProvider: SdkAgentProvider,
     private readonly interactionRequestHandler: InteractionRequestHandler,
   ) {}
 
   public async callbackPost(request: Request, response: Response) {
-    const agent = await this.agentFactory.create()
+    const agent = await this.agentProvider.provide()
 
     try {
       await agent.findInteraction(request.body.jwt)
