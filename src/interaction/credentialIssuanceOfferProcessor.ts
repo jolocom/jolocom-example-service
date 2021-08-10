@@ -6,14 +6,23 @@ import { Assert } from '../assert/assert'
 import { injectable } from 'inversify'
 import { CredentialIssuanceRequestFactory } from '../credential/issuance/credentialIssuanceRequestFactory'
 
+/**
+ * This implementation responsible for processing of {@link FlowType.CredentialOffer} interactions flows callback request.
+ */
 @injectable()
 export class CredentialIssuanceOfferProcessor implements InteractionProcessor {
   constructor(private readonly credentialIssuanceRequestFactory: CredentialIssuanceRequestFactory) {}
 
+  /**
+   * {@inheritDoc}
+   */
   supportedType(): FlowType {
     return FlowType.CredentialOffer
   }
 
+  /**
+   * {@inheritDoc}
+   */
   async process(jwt: string, agent: Agent): Promise<JSONWebToken<any>> {
     const interaction = await agent.findInteraction(jwt)
 

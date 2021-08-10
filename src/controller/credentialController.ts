@@ -9,7 +9,13 @@ import { TYPES } from '../types'
 import { CredentialOfferRequest } from '../credential/offer/credentialOfferRequest'
 import { CredentialOfferFactory } from '../credential/offer/credentialOfferFactory'
 import { ICredentialRequest } from '@jolocom/protocol-ts/dist/lib/interactionTokens'
+// @ts-ignore
+import { FlowType } from '@jolocom/sdk/js/interactionManager/types'
 
+/**
+ * The controller to handle all requests related to the
+ * {@link FlowType.CredentialOffer} or {@link FlowType.CredentialShare} interactions processes.
+ */
 @injectable()
 export class CredentialController {
   constructor(
@@ -21,6 +27,13 @@ export class CredentialController {
     private readonly credentialOfferFactory: CredentialOfferFactory
   ) {}
 
+  /**
+   * An action method to receive the resource containing credential request information.
+   *
+   * @param request The {@link Request} object representation.
+   * @param response The {@link Response} object representation.
+   * @return {Promise<void>}
+   */
   public async requestPost(request: Request, response: Response) {
     // TODO: Validation of credential type availability
     // will be performed by the swagger validator after "Design first" approach implementation
@@ -38,6 +51,13 @@ export class CredentialController {
     response.json(requestDescription.toJSON())
   }
 
+  /**
+   * An action method to receive the resource containing credential offer request information.
+   *
+   * @param request The {@link Request} object representation.
+   * @param response The {@link Response} object representation.
+   * @return {Promise<void>}
+   */
   public async offerPost(request: Request, response: Response) {
     // TODO: Validation of credential type availability
     // will be performed by the swagger validator after "Design first" approach implementation
@@ -55,6 +75,13 @@ export class CredentialController {
     response.json(requestDescription.toJSON())
   }
 
+  /**
+   * An action method to receive the resource containing custom credential offer request information.
+   *
+   * @param request The {@link Request} object representation.
+   * @param response The {@link Response} object representation.
+   * @return {Promise<void>}
+   */
   public async offerCustomPost(request: Request, response: Response) {
     // TODO: Validation of the request body
     // will be performed by the swagger validator after "Design first" approach implementation

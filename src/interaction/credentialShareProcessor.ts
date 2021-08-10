@@ -5,12 +5,21 @@ import { FlowType } from '@jolocom/sdk/js/interactionManager/types'
 import { Assert } from '../assert/assert'
 import { injectable } from 'inversify'
 
+/**
+ * This implementation responsible for processing of {@link FlowType.CredentialShare} interactions flows callback request.
+ */
 @injectable()
 export class CredentialShareProcessor implements InteractionProcessor {
+  /**
+   * {@inheritDoc}
+   */
   supportedType(): FlowType {
     return FlowType.CredentialShare
   }
 
+  /**
+   * {@inheritDoc}
+   */
   async process(jwt: string, agent: Agent): Promise<JSONWebToken<any>> {
     const interaction = await agent.findInteraction(jwt)
 
