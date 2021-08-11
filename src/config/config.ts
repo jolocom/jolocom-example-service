@@ -1,6 +1,6 @@
 import appRootDir from 'app-root-path'
 import dotenv from 'dotenv'
-import { Assert } from '../assert/assert'
+import { strict as assert } from 'assert'
 import { Oas3ToolsObjectOrientedConfig } from '@jolocom/oas3-tools-object-oriented'
 import { oas3AppOptions } from './swagger'
 
@@ -17,11 +17,11 @@ if (envFound.error) {
 
 // Asserting that required env variables are defined
 const assertRequiredVariablesDefined = () => {
-  Assert.isDefined(process.env.APP_PORT, 'process.env.APP_PORT')
-  Assert.isDefined(process.env.APP_ENV, 'process.env.APP_ENV')
-  Assert.isDefined(process.env.APP_HOST, 'process.env.APP_HOST')
-  Assert.isDefined(process.env.APP_SCHEME, 'process.env.APP_SCHEME')
-  Assert.isDefined(process.env.SDK_CALLBACK_URL, 'process.env.SDK_CALLBACK_URL')
+  assert(process.env.APP_PORT, "Expected 'process.env.APP_PORT' to be defined")
+  assert(process.env.APP_ENV, "Expected 'process.env.APP_ENV' to be defined")
+  assert(process.env.APP_HOST, "Expected 'process.env.APP_HOST' to be defined")
+  assert(process.env.APP_SCHEME, "Expected 'process.env.APP_SCHEME' to be defined")
+  assert(process.env.SDK_CALLBACK_URL, "Expected 'process.env.SDK_CALLBACK_URL' to be defined")
 }
 
 assertRequiredVariablesDefined()
