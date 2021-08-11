@@ -1,5 +1,8 @@
 import { ClaimsMetadata } from '../credential/claimsMetadata'
 
+/**
+ * Map of predefined and used only in dev environment {@link ClaimsMetadata} implementation.
+ */
 export const demoMetaData: ClaimsMetadata = {
   DemoCred:  {
     type: ['VerifiableCredential', 'DemoCred'],

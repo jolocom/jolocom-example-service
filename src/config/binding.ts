@@ -35,6 +35,7 @@ import {
 } from '../controller'
 
 export const binding = new AsyncContainerModule(async (bind) => {
+  // Creating the connection with DB
   const connection = await getDbConnection()
 
   // Config

@@ -2,6 +2,9 @@ import { config } from './config'
 import { Configuration, configure, getLogger } from 'log4js';
 
 //TODO: Implement decorator to pass logger with DI
+/**
+ * Logger configuration definition.
+ */
 const devConfig: Configuration = {
   appenders: {
     dev: { type: 'stdout' },

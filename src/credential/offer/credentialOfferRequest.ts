@@ -1,5 +1,8 @@
 import { CredentialDefinition, CredentialRenderTypes, ClaimInterface } from '@jolocom/protocol-ts'
 
+/**
+ * Representation of the user offer request.
+ */
 export interface CredentialOfferRequest {
   name: string
   type: string

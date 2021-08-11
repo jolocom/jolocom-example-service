@@ -4,7 +4,12 @@ import { RequestDescriptionFactory } from '../interaction/requestDescriptionFact
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { TYPES } from '../types'
+// @ts-ignore
+import { FlowType } from '@jolocom/sdk/js/interactionManager/types'
 
+/**
+ * The controller to handle all requests related to the {@link FlowType.Authentication} interaction process.
+ */
 @injectable()
 export class AuthenticationController {
   constructor(
@@ -13,6 +18,13 @@ export class AuthenticationController {
     @inject(TYPES.AppConfig) private readonly appConfig: AppConfig
   ) {}
 
+  /**
+   * An action method to receive the resource containing {@link FlowType.Authentication} request information.
+   *
+   * @param request The {@link Request} object representation.
+   * @param response The {@link Response} object representation.
+   * @return {Promise<void>}
+   */
   public async authenticationPost(request: Request, response: Response) {
     // TODO: Add request body validation
     // TODO: Refactor in favor of strategy pattern usage

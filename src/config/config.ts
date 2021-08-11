@@ -4,15 +4,18 @@ import { Assert } from '../assert/assert'
 import { Oas3ToolsObjectOrientedConfig } from '@jolocom/oas3-tools-object-oriented'
 import { oas3AppOptions } from './swagger'
 
+// Defining default environment variables
 process.env.NODE_ENV = process.env.APP_ENV || 'dev';
 process.env.API_VERSION = process.env.API_VERSION || 'v1';
 
+// Loading env variables defined in .env file into the process.env scope
 const envFound = dotenv.config()
 
 if (envFound.error) {
   throw new Error('Couldn\'t find .env file')
 }
 
+// Asserting that required env variables are defined
 const assertRequiredVariablesDefined = () => {
   Assert.isDefined(process.env.APP_PORT, 'process.env.APP_PORT')
   Assert.isDefined(process.env.APP_ENV, 'process.env.APP_ENV')
@@ -23,6 +26,9 @@ const assertRequiredVariablesDefined = () => {
 
 assertRequiredVariablesDefined()
 
+/**
+ * The main application configuration definition abstraction.
+ */
 export interface AppConfig {
   port: string,
   env: string,
@@ -58,6 +64,9 @@ export interface AppConfig {
   swagger: Oas3ToolsObjectOrientedConfig
 }
 
+/**
+ * The main application configuration definition.
+ */
 export const config: AppConfig = {
   port: process.env.APP_PORT as string,
   env: process.env.APP_ENV as string,

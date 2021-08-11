@@ -5,12 +5,21 @@ import { injectable } from 'inversify'
 import { Assert } from '../assert/assert'
 import { JSONWebToken } from 'jolocom-lib/js/interactionTokens/JSONWebToken'
 
+/**
+ * This implementation responsible for processing of {@link FlowType.Authorization} interactions flows callback request.
+ */
 @injectable()
 export class AuthorizationProcessor implements InteractionProcessor {
+  /**
+   * {@inheritDoc}
+   */
   supportedType(): FlowType {
     return FlowType.Authorization
   }
 
+  /**
+   * {@inheritDoc}
+   */
   async process(jwt: string, agent: Agent): Promise<JSONWebToken<any>> {
     const interaction = await agent.findInteraction(jwt)
 
