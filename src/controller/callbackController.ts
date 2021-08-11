@@ -1,56 +1,38 @@
-import { controller, httpPost } from 'inversify-express-utils'
 import { Request, Response } from 'express'
-import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
+import { SdkAgentProvider } from '../sdk/sdkAgentProvider'
 import { ErrorCode } from '@jolocom/sdk'
 import { StatusCodes } from 'http-status-codes'
 import { InteractionRequestHandler } from '../interaction/interactionRequestHandler'
+import { injectable } from 'inversify'
+// @ts-ignore
+import { FlowType } from '@jolocom/sdk/js/interactionManager/types'
 
-@controller('/callback')
+/**
+ * The controller to handle all interactions callback requests.
+ */
+@injectable()
 export class CallbackController {
   constructor(
-    private readonly agentFactory: SdkAgentFactory,
+    private readonly agentProvider: SdkAgentProvider,
     private readonly interactionRequestHandler: InteractionRequestHandler,
   ) {}
 
   /**
-   * @openapi
-   * /api/v1/callback:
-   *   post:
-   *     summary: Process callback request
-   *     tags:
-   *       - Callback
-   *     requestBody:
-   *       description: Body of the request
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             type: object
-   *             properties:
-   *               jwt:
-   *                 type: string
-   *     responses:
-   *       200:
-   *         description: Returns (optional) token.
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 token:
-   *                   required: false
-   *                   type: string
-   *                   description: The token.
+   * An action method to process interactions callback request for all {@link FlowType} types.
+   * In response will be received encoded processed interaction message jwt.
+   *
+   * @param request The {@link Request} object representation.
+   * @param response The {@link Response} object representation.
+   * @return {Promise<void>}
    */
-  @httpPost('/')
-  public async post(request: Request, response: Response) {
-    const agent = await this.agentFactory.create()
+  public async callbackPost(request: Request, response: Response) {
+    const agent = await this.agentProvider.provide()
 
     try {
       await agent.findInteraction(request.body.jwt)
     } catch (error) {
       if (error.message === ErrorCode.NoSuchInteraction) {
-        return response.status(StatusCodes.NOT_FOUND).json({
+        response.status(StatusCodes.NOT_FOUND).json({
           message: `Interaction with token '${request.body.jwt}' not found.`
         })
       }
@@ -61,6 +43,6 @@ export class CallbackController {
     const token = await this.interactionRequestHandler.handle(request.body.jwt, agent)
 
     // TODO: Make common responce preparation and creation
-    return { token: token.encode() }
+    response.json({ token: token.encode() })
   }
 }

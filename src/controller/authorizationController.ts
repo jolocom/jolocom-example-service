@@ -1,63 +1,34 @@
 import { AppConfig } from '../config/config'
-import { controller, httpPost } from 'inversify-express-utils'
-import { Request } from 'express'
-import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
+import { Request, Response } from 'express'
+import { SdkAgentProvider } from '../sdk/sdkAgentProvider'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
-import { inject } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { TYPES } from '../types'
+// @ts-ignore
+import { FlowType } from '@jolocom/sdk/js/interactionManager/types'
 
-@controller('/authorization')
+/**
+ * The controller to handle all requests related to the {@link FlowType.Authorization} interaction process.
+ */
+@injectable()
 export class AuthorizationController {
   constructor(
-    private readonly agentFactory: SdkAgentFactory,
+    private readonly agentProvider: SdkAgentProvider,
     private readonly requestDescriptionFactory: RequestDescriptionFactory,
     @inject(TYPES.AppConfig) private readonly appConfig: AppConfig
   ) {}
 
   /**
-   * @openapi
-   * /api/v1/authorization:
-   *   post:
-   *     summary: Receive authorization request description
-   *     tags:
-   *       - Authorization
-   *     requestBody:
-   *       description: Body of the request
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             type: object
-   *             properties:
-   *               description:
-   *                 type: string
-   *               action:
-   *                 type: string
-   *               imageURL:
-   *                 type: string
-   *     responses:
-   *       200:
-   *         description: Returns authorization request description.
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 id:
-   *                   type: string
-   *                   description: The token ID.
-   *                 jwt:
-   *                   type: string
-   *                   description: The token.
-   *                 qr:
-   *                   type: string
-   *                   description: The QR code of the JWT.
+   * An action method to receive the resource containing {@link FlowType.Authorization} request information.
+   *
+   * @param request The {@link Request} object representation.
+   * @param response The {@link Response} object representation.
+   * @return {Promise<void>}
    */
-  @httpPost('/')
-  public async post(request: Request) {
+  public async authorizationPost(request: Request, response: Response) {
     // TODO: Add request body validation
     // TODO: Refactor in favor of strategy pattern usage
-    const agent = await this.agentFactory.create()
+    const agent = await this.agentProvider.provide()
     const token = await agent.authorizationRequestToken({
       description: request.body?.description,
       action: request.body?.action,
@@ -66,6 +37,6 @@ export class AuthorizationController {
     })
     const requestDescription = await this.requestDescriptionFactory.create(token)
 
-    return requestDescription.toJSON()
+    response.json(requestDescription.toJSON())
   }
 }

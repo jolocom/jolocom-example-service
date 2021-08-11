@@ -7,7 +7,7 @@ import { Connection } from 'typeorm/connection/Connection'
 import { getDbConnection } from './db'
 import { AppConfig, config } from './config'
 import { SdkPasswordStorageFactory } from '../sdk/sdkPasswordStorageFactory'
-import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
+import { SdkAgentProvider } from '../sdk/sdkAgentProvider'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
 import { ClaimsMetadata } from '../credential/claimsMetadata'
 import { ClaimsMetadataProvider } from '../credential/claimsMetadataProvider'
@@ -27,10 +27,16 @@ import { CredentialIssuanceOfferProcessor } from '../interaction/credentialIssua
 import { CredentialIssuanceMetadataFactory } from '../credential/issuance/credentialIssuanceMetadataFactory'
 import { CredentialIssuanceClaimsResolver } from '../credential/issuance/credentialIssuanceClaimsResolver'
 import { CredentialIssuanceRequestFactory } from '../credential/issuance/credentialIssuanceRequestFactory'
+import {
+  AuthenticationController,
+  AuthorizationController,
+  CallbackController,
+  CredentialController,
+} from '../controller'
 
 export const binding = new AsyncContainerModule(async (bind) => {
+  // Creating the connection with DB
   const connection = await getDbConnection()
-  await require(config.controllersPath);
 
   // Config
   bind<AppConfig>(TYPES.AppConfig).toConstantValue(config);
@@ -52,6 +58,12 @@ export const binding = new AsyncContainerModule(async (bind) => {
     })
   }
 
+  // Controllers
+  bind(TYPES.Controller).to(AuthenticationController)
+  bind(TYPES.Controller).to(AuthorizationController)
+  bind(TYPES.Controller).to(CallbackController)
+  bind(TYPES.Controller).to(CredentialController)
+
   // SDK Services
   bind<SdkStorageFactory>(SdkStorageFactory).toSelf()
   bind<SdkFactory>(SdkFactory).toSelf()
@@ -66,7 +78,7 @@ export const binding = new AsyncContainerModule(async (bind) => {
     return sdkFactory.create()
   }).inSingletonScope()
   bind<SdkPasswordStorageFactory>(SdkPasswordStorageFactory).toSelf()
-  bind<SdkAgentFactory>(SdkAgentFactory).toSelf()
+  bind<SdkAgentProvider>(SdkAgentProvider).toSelf()
 
   // APP Services
   bind<RequestDescriptionFactory>(RequestDescriptionFactory).toSelf()

@@ -1,65 +1,40 @@
 import { AppConfig } from '../config/config'
-import { controller, httpPost } from 'inversify-express-utils'
-import { SdkAgentFactory } from '../sdk/sdkAgentFactory'
+import { SdkAgentProvider } from '../sdk/sdkAgentProvider'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
-import { Request } from 'express'
-import { inject } from 'inversify'
+import { Request, Response } from 'express'
+import { inject, injectable } from 'inversify'
 import { TYPES } from '../types'
+// @ts-ignore
+import { FlowType } from '@jolocom/sdk/js/interactionManager/types'
 
-@controller('/authentication')
+/**
+ * The controller to handle all requests related to the {@link FlowType.Authentication} interaction process.
+ */
+@injectable()
 export class AuthenticationController {
   constructor(
-    private readonly agentFactory: SdkAgentFactory,
+    private readonly agentProvider: SdkAgentProvider,
     private readonly requestDescriptionFactory: RequestDescriptionFactory,
     @inject(TYPES.AppConfig) private readonly appConfig: AppConfig
   ) {}
 
   /**
-   * @openapi
-   * /api/v1/authentication:
-   *   post:
-   *     summary: Receive authentication request description
-   *     tags:
-   *       - Authentication
-   *     requestBody:
-   *       description: Body of the request
-   *       required: false
-   *       content:
-   *         application/json:
-   *           schema:
-   *             type: object
-   *             properties:
-   *               description:
-   *                 type: string
-   *     responses:
-   *       200:
-   *         description: Returns authentication request description.
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 id:
-   *                   type: string
-   *                   description: The token ID.
-   *                 jwt:
-   *                   type: string
-   *                   description: The token.
-   *                 qr:
-   *                   type: string
-   *                   description: The QR code of the JWT.
+   * An action method to receive the resource containing {@link FlowType.Authentication} request information.
+   *
+   * @param request The {@link Request} object representation.
+   * @param response The {@link Response} object representation.
+   * @return {Promise<void>}
    */
-  @httpPost('/')
-  public async post(request: Request) {
+  public async authenticationPost(request: Request, response: Response) {
     // TODO: Add request body validation
     // TODO: Refactor in favor of strategy pattern usage
-    const agent = await this.agentFactory.create()
+    const agent = await this.agentProvider.provide()
     const token = await agent.authRequestToken({
       description: request.body?.description,
       callbackURL: this.appConfig.sdk.callbackUrl,
     })
     const requestDescription = await this.requestDescriptionFactory.create(token)
 
-    return requestDescription.toJSON()
+    response.json(requestDescription.toJSON())
   }
 }
