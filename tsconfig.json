@@ -1,7 +1,9 @@
 {
   "include": ["src", "tests"],
   "compilerOptions": {
-    "target": "ES6",
+    "target": "esnext",
+    "lib": ["esnext"],
+    "types": ["reflect-metadata", "node"],
     "module": "commonjs",
     "declaration": true,
     "sourceMap": true,
@@ -16,6 +18,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
   }
 }

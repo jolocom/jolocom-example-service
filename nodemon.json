@@ -1,0 +1,6 @@
+{
+  "ext": "ts,js,yaml",
+  "watch": ["src/*.ts", "src/**/*.ts", "node_modules/*jolocom*/**/*.js", "src/api/*.yaml"],
+  "ignore": ["src/**/*.spec.ts"],
+  "exec": "ts-node ./src/app.ts"
+}
