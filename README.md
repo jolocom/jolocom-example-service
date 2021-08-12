@@ -19,7 +19,7 @@ To build your application on top of **"Jolocom Example Service"** you need just 
 3. [Configure](#configure) application.
 4. [Run](#run-the-application) it.
 
-####**Configure:**
+#### **Configure:**
 First of all you need to create `.env` file with required environment variables
 (`.env.dist` is an example of `.env`).
 
@@ -37,7 +37,7 @@ yarn run dotenv-init
 
 :warning: *The main application configuration definition located in ['./src/config/config.ts'][4]*
 
-####**Run the application:**
+#### **Run the application:**
 
 Npm:
 ```bash
@@ -50,7 +50,7 @@ yarn run start
 ```
 
 :tada: At this point you have configured and working application with set of predefined endpoints
-which are hovering most of available interactions supported by the *['Jolocom SDK'][1]*.
+which are covering most of available interactions supported by the *['Jolocom SDK'][1]*.
 
 To see list of all available endpoints you can use *['Swagger UI'][6]* (sandbox)
 which can be reached on http://localhost:9000/docs (with default server configuration).
