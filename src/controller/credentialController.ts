@@ -1,5 +1,5 @@
 import { AppConfig } from '../config/config'
-import { ClaimsMetadataProvider } from '../credential/claimsMetadataProvider'
+import { StaticClaimsMetadataProvider } from '../credential/staticClaimsMetadataProvider'
 import { StaticCredentialOfferProvider } from '../credential/offer/staticCredentialOfferProvider'
 import { SdkAgentProvider } from '../sdk/sdkAgentProvider'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
@@ -22,7 +22,7 @@ export class CredentialController {
     @inject(TYPES.AppConfig) private readonly appConfig: AppConfig,
     private readonly agentProvider: SdkAgentProvider,
     private readonly requestDescriptionFactory: RequestDescriptionFactory,
-    private readonly claimsMetadataProvider: ClaimsMetadataProvider,
+    private readonly staticClaimsMetadataProvider: StaticClaimsMetadataProvider,
     private readonly staticCredentialOfferProvider: StaticCredentialOfferProvider,
     private readonly credentialOfferFactory: CredentialOfferFactory
   ) {}
@@ -39,7 +39,7 @@ export class CredentialController {
     // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
     const credentialRequirements: ICredentialRequest[] = request.body.types.map((type: string) => ({
-      type: this.claimsMetadataProvider.getByType(type).type
+      type: this.staticClaimsMetadataProvider.getByType(type).type
     }))
     const agent = await this.agentProvider.provide()
     const token = await agent.credRequestToken({
