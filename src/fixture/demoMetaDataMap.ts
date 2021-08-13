@@ -1,9 +1,9 @@
-import { ClaimsMetadata } from '../credential/claimsMetadata'
+import { ClaimsMetadataMap } from '../credential/claimsMetadataMap'
 
 /**
- * Map of predefined and used only in dev environment {@link ClaimsMetadata} implementation.
+ * Map of predefined and used only in dev environment {@link ClaimsMetadataMap} implementation.
  */
-export const demoMetaData: ClaimsMetadata = {
+export const demoMetaDataMap: ClaimsMetadataMap = {
   DemoCred:  {
     type: ['VerifiableCredential', 'DemoCred'],
       name: 'Demonstration Credential',

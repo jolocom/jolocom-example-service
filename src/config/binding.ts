@@ -9,13 +9,13 @@ import { AppConfig, config } from './config'
 import { SdkPasswordStorageFactory } from '../sdk/sdkPasswordStorageFactory'
 import { SdkAgentProvider } from '../sdk/sdkAgentProvider'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
-import { ClaimsMetadata } from '../credential/claimsMetadata'
-import { ClaimsMetadataProvider } from '../credential/claimsMetadataProvider'
+import { ClaimsMetadataMap } from '../credential/claimsMetadataMap'
+import { StaticClaimsMetadataProvider } from '../credential/staticClaimsMetadataProvider'
 import { CredentialOffer } from '@jolocom/protocol-ts'
 import { StaticCredentialOfferProvider } from '../credential/offer/staticCredentialOfferProvider'
-import { claimsMetadata as defaultClaimsMetadata } from '@jolocom/protocol-ts'
+import { claimsMetadata as defaultClaimsMetadataMap } from '@jolocom/protocol-ts'
 import { demoCredentialOffers } from '../fixture/demoCredentialOffers'
-import { demoMetaData } from '../fixture/demoMetaData'
+import { demoMetaDataMap } from '../fixture/demoMetaDataMap'
 import { TYPES } from '../types'
 import { CredentialOfferFactory } from '../credential/offer/credentialOfferFactory'
 import { InteractionProcessor } from '../interaction/interactionProcessor'
@@ -41,15 +41,15 @@ export const binding = new AsyncContainerModule(async (bind) => {
   // Config
   bind<AppConfig>(TYPES.AppConfig).toConstantValue(config);
   bind<Connection>(Connection).toConstantValue(connection);
-  bind<ClaimsMetadata>(TYPES.ClaimsMetadata).toDynamicValue(context => {
+  bind<ClaimsMetadataMap>(TYPES.StaticClaimsMetadataMap).toDynamicValue(context => {
     const appConfig = context.container.get<AppConfig>(TYPES.AppConfig)
-    let claimsMetadata = { ...defaultClaimsMetadata }
+    let claimsMetadataMap = { ...defaultClaimsMetadataMap }
 
     if (appConfig.env === 'dev') {
-      claimsMetadata = { ...claimsMetadata, ...demoMetaData  }
+      claimsMetadataMap = { ...claimsMetadataMap, ...demoMetaDataMap  }
     }
 
-    return claimsMetadata
+    return claimsMetadataMap
   })
 
   if (config.env === 'dev') {
@@ -82,7 +82,7 @@ export const binding = new AsyncContainerModule(async (bind) => {
 
   // APP Services
   bind<RequestDescriptionFactory>(RequestDescriptionFactory).toSelf()
-  bind<ClaimsMetadataProvider>(ClaimsMetadataProvider).toSelf()
+  bind<StaticClaimsMetadataProvider>(StaticClaimsMetadataProvider).toSelf()
   bind<StaticCredentialOfferProvider>(StaticCredentialOfferProvider).toSelf()
   bind<CredentialOfferFactory>(CredentialOfferFactory).toSelf()
   bind<InteractionProcessor>(TYPES.InteractionProcessor).to(AuthenticationProcessor)

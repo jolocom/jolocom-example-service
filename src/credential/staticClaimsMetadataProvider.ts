@@ -1,17 +1,17 @@
 import { inject, injectable } from 'inversify'
-import { ClaimsMetadata } from './claimsMetadata'
+import { ClaimsMetadataMap } from './claimsMetadataMap'
 import { TYPES } from '../types'
 import { BaseMetadata } from 'cred-types-jolocom-core/types'
 
 /**
- * This implementation is providing service of {@link ClaimsMetadata} concrete implementations.
+ * This implementation is providing service of {@link BaseMetadata}.
  */
 @injectable()
-export class ClaimsMetadataProvider {
-  constructor(@inject(TYPES.ClaimsMetadata) private claimsMetadata: ClaimsMetadata) {}
+export class StaticClaimsMetadataProvider {
+  constructor(@inject(TYPES.StaticClaimsMetadataMap) private claimsMetadataMap: ClaimsMetadataMap) {}
 
   /**
-   * Provides claims metadata representation based on provided type.
+   * Provides predefined (static) claims metadata representation based on provided type.
    *
    * @param {string} type The type of claims metadata concrete implementation.
    * @return {BaseMetadata} The {@link BaseMetadata} concrete implementation instance.
@@ -19,11 +19,11 @@ export class ClaimsMetadataProvider {
   public getByType(type: string): BaseMetadata {
     this.assertExists(type)
 
-    return this.claimsMetadata[type]
+    return this.claimsMetadataMap[type]
   }
 
   private assertExists(type: string) {
-    if (!(type in this.claimsMetadata)) {
+    if (!(type in this.claimsMetadataMap)) {
       throw new Error(`Claims metadata with type '${type}' not found.`)
     }
   }
