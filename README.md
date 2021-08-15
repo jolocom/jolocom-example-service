@@ -11,15 +11,27 @@ by defining contract with help of "OpenAPI Specification 3.0" located in ['opena
 
   * "node": ">=10"
 
-## Usage:
+## Usage
 
-To build your application on top of **"Jolocom Example Service"** you need just follow 4 simple steps:
+To build your application on top of **"Jolocom Example Service"** you need just follow 5 simple steps:
 1. Fork it (rename if required).
 2. Clone forked repository.
-3. [Configure](#configure) application.
-4. [Run](#run-the-application) it.
+3. [Install](#installation) dependencies.
+4. [Configure](#configuration) application.
+5. [Run](#running-the-application) it.
 
-#### **Configure:**
+#### **Installation**
+Npm:
+```bash
+npm install
+```
+
+Yarn:
+```bash
+yarn
+```
+
+#### **Configuration**
 First of all you need to create `.env` file with required environment variables
 (`.env.dist` is an example of `.env`).
 
@@ -37,7 +49,7 @@ yarn run dotenv-init
 
 :warning: *The main application configuration definition located in ['./src/config/config.ts'][4]*
 
-#### **Run the application:**
+#### **Running the application**
 
 Npm:
 ```bash
@@ -47,6 +59,18 @@ npm run start
 Yarn:
 ```bash
 yarn run start
+```
+
+Or run in debug mode (after run in debug mode you can attach debugger):
+
+Npm:
+```bash
+npm run debug
+```
+
+Yarn:
+```bash
+yarn run debug
 ```
 
 :tada: At this point you have configured and working application with set of predefined endpoints
