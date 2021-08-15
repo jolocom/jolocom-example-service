@@ -79,6 +79,11 @@ which are covering most of available interactions supported by the *['Jolocom SD
 To see list of all available endpoints you can use *['Swagger UI'][6]* (sandbox)
 which can be reached on http://localhost:9000/docs (with default server configuration).
 
+## Structure
+Here some structure representation in *'UML'*:
+
+![Structure](./docs/uml.svg)
+
 ## License
 
 [Apache-2.0][3]
