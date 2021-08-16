@@ -82,7 +82,7 @@ which can be reached on http://localhost:9000/docs (with default server configur
 ## Structure
 Here some structure representation in *'UML'*:
 
-![Structure](./docs/uml.svg)
+![Structure](./docs/structure_uml.svg)
 
 ## License
 
