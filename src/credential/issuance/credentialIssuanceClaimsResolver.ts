@@ -2,7 +2,7 @@ import { injectable } from 'inversify'
 import { CredentialDefinition } from '@jolocom/protocol-ts/lib/credential'
 import { ClaimInterface } from '@jolocom/protocol-ts'
 import { InvalidArgumentException } from '../../exception/invalidArgumentException'
-import { classToPlain } from 'class-transformer'
+import { serialize } from 'class-transformer'
 
 /**
  * This implementation resolves all claims of the custom credential issuance offer
@@ -37,14 +37,14 @@ export class CredentialIssuanceClaimsResolver {
         // Asserting that required data are present
         if (!property.path || !property.path.length) {
           throw new InvalidArgumentException(
-            `Can't resolve claim. Claim name must be provided. ${classToPlain(displayProperties)}.`
+            `Can't resolve claim. Claim name must be provided. ${serialize(credential.display!.properties)}.`
           )
         }
 
         // Asserting that required data are present
         if (!property.text) {
           throw new InvalidArgumentException(
-            `Can't resolve claim. Claim value must be provided. ${classToPlain(displayProperties)}.`
+            `Can't resolve claim. Claim value must be provided. ${serialize(credential.display!.properties)}.`
           )
         }
 

@@ -1,7 +1,7 @@
 import { CredentialIssuanceRequest } from './credentialIssuanceRequest'
 import { CredentialOfferFlowState } from '@jolocom/sdk/js/interactionManager/types'
 import { InvalidArgumentException } from '../../exception/invalidArgumentException'
-import { classToPlain } from 'class-transformer'
+import { serialize } from 'class-transformer'
 import { CredentialIssuanceMetadataFactory } from './credentialIssuanceMetadataFactory'
 import { CredentialIssuanceClaimsResolver } from './credentialIssuanceClaimsResolver'
 import { injectable } from 'inversify'
@@ -31,7 +31,7 @@ export class CredentialIssuanceRequestFactory {
     // Asserting that required data are present
     if (!offer || !offer.credential) {
       throw new InvalidArgumentException(
-        `Interaction request processing failed. Provided invalid Offer with value: '${offer ? classToPlain(offer) : offer}'`
+        `Interaction request processing failed. Provided invalid Offer with value: '${offer ? serialize(offer) : offer}'`
       )
     }
 
