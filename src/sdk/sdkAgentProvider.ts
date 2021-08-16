@@ -16,7 +16,7 @@ export class SdkAgentProvider {
     private readonly passwordStorageFactory: SdkPasswordStorageFactory,
     private readonly sdk: JolocomSDK,
     @inject(TYPES.AppConfig) private readonly appConfig: AppConfig
-) {}
+  ) {}
 
   /**
    * Provides {@link Agent} instance.
