@@ -35,7 +35,11 @@ export class CredentialIssuanceOfferProcessor implements InteractionProcessor {
 
     const state = interaction.getSummary().state as CredentialOfferFlowState
     const credentialIssuanceRequestsMap = state.selectedTypes.reduce((map, selectedType: string) => ({
-      ...map, [selectedType]: async () => this.credentialIssuanceRequestFactory.create(state, selectedType)
+      ...map, [selectedType]: async () => this.credentialIssuanceRequestFactory.create(
+        state,
+        selectedType,
+        interaction.participants.responder?.did
+      )
     }), {})
     const credentials = await interaction.issueSelectedCredentials(credentialIssuanceRequestsMap)
     const token = await interaction.createCredentialReceiveToken(credentials)

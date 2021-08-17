@@ -30,6 +30,7 @@ export class AuthorizationProcessor implements InteractionProcessor {
 
     await agent.processJWT(jwt)
 
-    return interaction.lastMessage
+    // Client app (SmartWallet) expects to receive initial request token
+    return interaction.firstMessage
   }
 }
