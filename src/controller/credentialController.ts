@@ -39,7 +39,9 @@ export class CredentialController {
     // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
     const credentialRequirements: ICredentialRequest[] = request.body.types.map((type: string) => ({
-      type: this.staticClaimsMetadataProvider.getByType(type).type
+      type: this.staticClaimsMetadataProvider.getByType(type).type,
+      // TODO: Define constraints definition place and provide
+      constraints: [],
     }))
     const agent = await this.agentProvider.provide()
     const token = await agent.credRequestToken({
