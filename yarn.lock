@@ -972,9 +972,9 @@
     "@jolocom/native-core-node-14-linux-x64" "^1.1.1"
     "@jolocom/native-core-node-14-win32-x64" "^1.1.1"
 
-"@jolocom/oas3-tools-object-oriented@jolocom/oas3-tools-object-oriented#jolocom-oas3-tools-object-oriented-v0.1.0-gitpkg":
-  version "0.1.0"
-  resolved "https://codeload.github.com/jolocom/oas3-tools-object-oriented/tar.gz/2983dd7ec77bd39e5981669216d740ed7da423ce"
+"@jolocom/oas3-tools-object-oriented@jolocom/oas3-tools-object-oriented#jolocom-oas3-tools-object-oriented-v0.1.1-gitpkg":
+  version "0.1.1"
+  resolved "https://codeload.github.com/jolocom/oas3-tools-object-oriented/tar.gz/4483de3ffc38c91082676157a1e23fe0b6e03896"
   dependencies:
     oas3-tools "^2.2.3"
 
