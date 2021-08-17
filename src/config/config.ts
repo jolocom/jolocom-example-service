@@ -64,6 +64,8 @@ export interface AppConfig {
   swagger: Oas3ToolsObjectOrientedConfig
 }
 
+const oas3DeclarationFilePath = appRootDir + '/src/api/openapi.yaml'
+
 /**
  * The main application configuration definition.
  */
@@ -100,7 +102,7 @@ export const config: AppConfig = {
   },
 
   swagger: {
-    oas3AppOptions,
-    oas3DeclarationFilePath: appRootDir + '/src/api/openapi.yaml',
+    oas3AppOptions: oas3AppOptions(oas3DeclarationFilePath),
+    oas3DeclarationFilePath,
   }
 }

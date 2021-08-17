@@ -26,11 +26,9 @@ export class AuthenticationController {
    * @return {Promise<void>}
    */
   public async authenticationPost(request: Request, response: Response) {
-    // TODO: Add request body validation
-    // TODO: Refactor in favor of strategy pattern usage
     const agent = await this.agentProvider.provide()
     const token = await agent.authRequestToken({
-      description: request.body?.description,
+      description: request.body.description,
       callbackURL: this.appConfig.sdk.callbackUrl,
     })
     const requestDescription = await this.requestDescriptionFactory.create(token)
