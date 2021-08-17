@@ -35,8 +35,6 @@ export class CredentialController {
    * @return {Promise<void>}
    */
   public async requestPost(request: Request, response: Response) {
-    // TODO: Validation of credential type availability
-    // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
     const credentialRequirements: ICredentialRequest[] = request.body.types.map((type: string) => ({
       type: this.staticClaimsMetadataProvider.getByType(type).type,
@@ -61,8 +59,6 @@ export class CredentialController {
    * @return {Promise<void>}
    */
   public async offerPost(request: Request, response: Response) {
-    // TODO: Validation of credential type availability
-    // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
     const offeredCredentials: CredentialOfferRequest[] = request.body.types.map(
       (type: string) => this.staticCredentialOfferProvider.getByType(type)
@@ -85,8 +81,6 @@ export class CredentialController {
    * @return {Promise<void>}
    */
   public async offerCustomPost(request: Request, response: Response) {
-    // TODO: Validation of the request body
-    // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
     const offeredCredentials: CredentialOfferRequest[] = request.body.map(
       (offer: CredentialOfferRequest) => this.credentialOfferFactory.create(offer)
