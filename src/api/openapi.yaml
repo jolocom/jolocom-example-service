@@ -28,7 +28,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AuthenticationDescription'
+              $ref: '#/components/schemas/AuthenticationRequest'
       responses:
         "200":
           description: Returns authentication request description.
@@ -154,7 +154,7 @@ paths:
       operationId: offerCustomPost
 components:
   schemas:
-    AuthenticationDescription:
+    AuthenticationRequest:
       type: object
       properties:
         description:
