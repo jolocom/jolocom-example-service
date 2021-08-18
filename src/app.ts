@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 import { config } from './config/config'
-import * as bodyParser from 'body-parser'
 import { InversifyExpressServer } from 'inversify-express-utils'
 import { logger } from './config/logger'
 import { Container } from 'inversify'
@@ -18,10 +17,6 @@ import { oas3ToolsObjectOriented } from '@jolocom/oas3-tools-object-oriented'
 
   // Sets the configuration function to be applied to the application (attaching middlewares).
   server.setConfig((app) => {
-    app.use(bodyParser.urlencoded({
-      extended: true
-    }))
-    app.use(bodyParser.json())
     // Attach middleware to wire up oas3 declaration with controllers methods.
     app.use(oas3ToolsObjectOriented(container.getAll(TYPES.Controller), config.swagger))
   })

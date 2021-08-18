@@ -1,5 +1,5 @@
 import { AppConfig } from '../config/config'
-import { ClaimsMetadataProvider } from '../credential/claimsMetadataProvider'
+import { StaticClaimsMetadataProvider } from '../credential/staticClaimsMetadataProvider'
 import { StaticCredentialOfferProvider } from '../credential/offer/staticCredentialOfferProvider'
 import { SdkAgentProvider } from '../sdk/sdkAgentProvider'
 import { RequestDescriptionFactory } from '../interaction/requestDescriptionFactory'
@@ -22,7 +22,7 @@ export class CredentialController {
     @inject(TYPES.AppConfig) private readonly appConfig: AppConfig,
     private readonly agentProvider: SdkAgentProvider,
     private readonly requestDescriptionFactory: RequestDescriptionFactory,
-    private readonly claimsMetadataProvider: ClaimsMetadataProvider,
+    private readonly staticClaimsMetadataProvider: StaticClaimsMetadataProvider,
     private readonly staticCredentialOfferProvider: StaticCredentialOfferProvider,
     private readonly credentialOfferFactory: CredentialOfferFactory
   ) {}
@@ -35,11 +35,11 @@ export class CredentialController {
    * @return {Promise<void>}
    */
   public async requestPost(request: Request, response: Response) {
-    // TODO: Validation of credential type availability
-    // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
     const credentialRequirements: ICredentialRequest[] = request.body.types.map((type: string) => ({
-      type: this.claimsMetadataProvider.getByType(type).type
+      type: this.staticClaimsMetadataProvider.getByType(type).type,
+      // TODO: Define constraints definition place and provide
+      constraints: [],
     }))
     const agent = await this.agentProvider.provide()
     const token = await agent.credRequestToken({
@@ -59,8 +59,6 @@ export class CredentialController {
    * @return {Promise<void>}
    */
   public async offerPost(request: Request, response: Response) {
-    // TODO: Validation of credential type availability
-    // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
     const offeredCredentials: CredentialOfferRequest[] = request.body.types.map(
       (type: string) => this.staticCredentialOfferProvider.getByType(type)
@@ -83,8 +81,6 @@ export class CredentialController {
    * @return {Promise<void>}
    */
   public async offerCustomPost(request: Request, response: Response) {
-    // TODO: Validation of the request body
-    // will be performed by the swagger validator after "Design first" approach implementation
     // TODO: Refactor in favor of strategy pattern usage
     const offeredCredentials: CredentialOfferRequest[] = request.body.map(
       (offer: CredentialOfferRequest) => this.credentialOfferFactory.create(offer)

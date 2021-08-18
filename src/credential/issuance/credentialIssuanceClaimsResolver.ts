@@ -1,8 +1,8 @@
 import { injectable } from 'inversify'
-import { CredentialManifestDisplayMapping } from '@jolocom/protocol-ts/lib/credential'
+import { CredentialDefinition } from '@jolocom/protocol-ts/lib/credential'
 import { ClaimInterface } from '@jolocom/protocol-ts'
 import { InvalidArgumentException } from '../../exception/invalidArgumentException'
-import { classToPlain } from 'class-transformer'
+import { serialize } from 'class-transformer'
 
 /**
  * This implementation resolves all claims of the custom credential issuance offer
@@ -15,24 +15,36 @@ export class CredentialIssuanceClaimsResolver {
   /**
    * Resolves claims based on input data from the initial request.
    *
-   * @param displayProperties Collection containing custom input from offer request
-   *        ({@link CredentialManifestDisplayMapping}).
+   * @param {CredentialDefinition} credential An offer credential definition ({@link CredentialDefinition}).
+   * @param {string} responderDid Did of interaction 'responder'.
    * @return {ClaimInterface} Map of claims ({@link ClaimInterface}), where keys are claims names.
    */
-  public resolve(displayProperties: CredentialManifestDisplayMapping[]): ClaimInterface {
+  public resolve(credential: CredentialDefinition, responderDid: string | undefined): ClaimInterface {
+    if (!credential.display) {
+      return {
+        message: responderDid ? `Credential for ${responderDid}.` : 'Credential offer.',
+      }
+    }
+
+    if (!credential.display.properties) {
+      throw new InvalidArgumentException(
+        `Can't resolve claim. Offer credential display properties must be defined.`
+      )
+    }
+
     return Object.fromEntries(
-      Object.values(displayProperties).map((property) => {
+      Object.values(credential.display.properties).map((property) => {
         // Asserting that required data are present
         if (!property.path || !property.path.length) {
           throw new InvalidArgumentException(
-            `Can't resolve claim. Claim name must be provided. ${classToPlain(displayProperties)}.`
+            `Can't resolve claim. Claim name must be provided. ${serialize(credential.display!.properties)}.`
           )
         }
 
         // Asserting that required data are present
         if (!property.text) {
           throw new InvalidArgumentException(
-            `Can't resolve claim. Claim value must be provided. ${classToPlain(displayProperties)}.`
+            `Can't resolve claim. Claim value must be provided. ${serialize(credential.display!.properties)}.`
           )
         }
 

@@ -26,13 +26,12 @@ export class AuthorizationController {
    * @return {Promise<void>}
    */
   public async authorizationPost(request: Request, response: Response) {
-    // TODO: Add request body validation
     // TODO: Refactor in favor of strategy pattern usage
     const agent = await this.agentProvider.provide()
     const token = await agent.authorizationRequestToken({
-      description: request.body?.description,
-      action: request.body?.action,
-      imageURL: request.body?.imageURL,
+      description: request.body.description,
+      action: request.body.action,
+      imageURL: request.body.imageURL,
       callbackURL: this.appConfig.sdk.callbackUrl,
     })
     const requestDescription = await this.requestDescriptionFactory.create(token)
