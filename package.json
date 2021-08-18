@@ -34,7 +34,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@jolocom/oas3-tools-object-oriented": "jolocom/oas3-tools-object-oriented#jolocom-oas3-tools-object-oriented-v0.1.1-gitpkg",
+    "@jolocom/oas3-tools-object-oriented": "jolocom/oas3-tools-object-oriented#jolocom-oas3-tools-object-oriented-v0.1.2-gitpkg",
     "@jolocom/sdk": "^1.3.1",
     "@jolocom/sdk-password-store-filesystem": "^0.2.2",
     "@jolocom/sdk-storage-typeorm": "^4.2.0",
