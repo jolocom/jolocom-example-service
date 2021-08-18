@@ -29,18 +29,18 @@ export class CallbackController {
     const agent = await this.agentProvider.provide()
 
     try {
-      await agent.findInteraction(request.body.jwt)
+      await agent.findInteraction(request.body.token)
     } catch (error) {
       if (error.message === ErrorCode.NoSuchInteraction) {
         response.status(StatusCodes.NOT_FOUND).json({
-          message: `Interaction with token '${request.body.jwt}' not found.`
+          message: `Interaction with token '${request.body.token}' not found.`
         })
       }
 
       throw (error)
     }
 
-    const token = await this.interactionRequestHandler.handle(request.body.jwt, agent)
+    const token = await this.interactionRequestHandler.handle(request.body.token, agent)
 
     // TODO: Make common responce preparation and creation
     response.json({ token: token.encode() })

@@ -3,8 +3,10 @@ import { Oas3ToolsObjectOrientedOptions } from '@jolocom/oas3-tools-object-orien
 /**
  * Oas3 application configuration definition.
  */
-export const oas3AppOptions = {
+export const oas3AppOptions = (apiSpec: string) => ({
   openApiValidator: {
-    apiSpec: '3.0.0'
+    apiSpec,
+    validateRequests: true,
+    validateResponses: true,
   }
-} as Oas3ToolsObjectOrientedOptions
+} as Oas3ToolsObjectOrientedOptions)
