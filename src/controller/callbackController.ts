@@ -31,7 +31,7 @@ export class CallbackController {
     try {
       await agent.findInteraction(request.body.token)
     } catch (error) {
-      if (error.message === ErrorCode.NoSuchInteraction) {
+      if (error instanceof Error &&  error.message === ErrorCode.NoSuchInteraction) {
         response.status(StatusCodes.NOT_FOUND).json({
           message: `Interaction with token '${request.body.token}' not found.`
         })

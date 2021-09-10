@@ -108,6 +108,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RequestDescription'
+        "404":
+          description: Returns when interaction for provided type(s) was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string        
       x-swagger-router-controller: CredentialController
       operationId: requestPost
   /credential-issuance/offer:
@@ -129,6 +138,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RequestDescription'
+         "404":
+          description: Returns when interaction for provided type(s) was not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string        
       x-swagger-router-controller: CredentialController
       operationId: offerPost
   /credential-issuance/offer/custom:

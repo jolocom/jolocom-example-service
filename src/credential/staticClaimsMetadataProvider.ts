@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify'
 import { ClaimsMetadataMap } from './claimsMetadataMap'
 import { TYPES } from '../types'
 import { BaseMetadata } from 'cred-types-jolocom-core/types'
+import { InvalidArgumentException } from '../exception/invalidArgumentException'
 
 /**
  * This implementation is providing service of {@link BaseMetadata}.
@@ -24,7 +25,7 @@ export class StaticClaimsMetadataProvider {
 
   private assertExists(type: string) {
     if (!(type in this.claimsMetadataMap)) {
-      throw new Error(`Claims metadata with type '${type}' not found.`)
+      throw new InvalidArgumentException(`Claims metadata with type '${type}' not found.`)
     }
   }
 }
