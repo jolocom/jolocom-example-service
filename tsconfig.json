@@ -1,7 +1,7 @@
 {
   "include": ["src", "tests"],
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ES2018",
     "lib": ["esnext"],
     "types": ["reflect-metadata", "node"],
     "module": "commonjs",
